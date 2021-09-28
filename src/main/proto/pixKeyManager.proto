@@ -7,14 +7,50 @@ option objc_class_prefix = "HLW";
 
 package br.com.zup;
 
+import "google/protobuf/timestamp.proto";
+
 service PixKeyManagerService {
-  rpc send (PixKeyManagerRequest) returns (PixKeyManagerReply) {}
+  rpc register (PixKeyManagerRequest) returns (PixKeyManagerResponse) {}
+}
+
+service PixKeyManagerRemoveService {
+  rpc remove (RemoveKeyRequest) returns (RemoveKeyResponse){}
+}
+
+enum KeyTypeRequest {
+  CPF = 0;
+  CELL_NUMBER = 1;
+  EMAIL = 2;
+  RANDOM_KEY = 3;
+}
+
+enum AccountTypeRequest {
+    CONTA_CORRENTE = 0;
+    CONTA_POUPANCA  =1;
 }
 
 message PixKeyManagerRequest {
-  string name = 1;
+  string id = 1;
+  KeyTypeRequest keyTipeRequest = 2;
+  string valueKey = 3;
+  AccountTypeRequest accountTypeRequest = 4;
+
 }
 
-message PixKeyManagerReply {
-  string message = 1;
+message PixKeyManagerResponse {
+  int64 id = 1;
+}
+
+message ErrorDetails{
+  int32 code = 1;
+  string message =2;
+}
+
+message RemoveKeyRequest{
+  string clienteId = 1;
+  string pixKeyId = 2;
+}
+message RemoveKeyResponse{
+  string clienteId = 1;
+  string pixKeyId = 2;
 }
